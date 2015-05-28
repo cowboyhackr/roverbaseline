@@ -1,5 +1,5 @@
 var bleno = require('bleno'),
-  BatteryService = require('./roverbluetoothservice');
+  RoverBlueToothService = require('./roverbluetoothservice');
   
 var primaryService = new RoverBlueToothService();
 
