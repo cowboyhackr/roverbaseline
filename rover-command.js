@@ -6,7 +6,7 @@ var util = require('util'),
   gpio = require("pi-gpio"),
   Descriptor = bleno.Descriptor,
   Characteristic = bleno.Characteristic,
-  ShinySettings = require('./shiny');
+  RoverSettings = require('./rover');
 
 
 
