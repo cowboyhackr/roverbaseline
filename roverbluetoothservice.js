@@ -1,7 +1,7 @@
 var util = require('util'),
   bleno = require('bleno'),
   BlenoPrimaryService = bleno.PrimaryService,
-  RoverCommand = require('./rover-command');
+  RoverCommand = require('./rover-command-2');
 
 function RoverBlueToothService() {
   RoverBlueToothService.super_.call(this, {
