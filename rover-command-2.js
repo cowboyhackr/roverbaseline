@@ -243,7 +243,6 @@ function setUpPins(callback){
     },
     ], function(err, results) {
         console.log('Pins set up');
-        write();
         callback();
     });
 }
