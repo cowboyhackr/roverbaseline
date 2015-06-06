@@ -4,6 +4,7 @@ var util = require('util'),
   exec = require('child_process').exec,
   bleno = require('bleno'),
   gpio = require("rpi-gpio"),
+  async = require("async"),
   Descriptor = bleno.Descriptor,
   Characteristic = bleno.Characteristic,
   RoverSettings = require('./rover');
@@ -30,7 +31,7 @@ var BatteryLevelCharacteristic = function() {
 util.inherits(BatteryLevelCharacteristic, Characteristic);
 
 BatteryLevelCharacteristic.prototype.onReadRequest = function(offset, callback) {
-
+  setUpPins();
   console.log("in read");
   if (os.platform() === 'darwin') {
     exec('pmset -g batt', function (error, stdout, stderr) {
@@ -77,263 +78,172 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
 
     if(command === "0"){
       console.log("stop");
-      // print "Now stop"
-      // GPIO.output(Motor1E,GPIO.LOW)
 
-           gpio.open(16, "output", function(err) { 
-            if(err){
-              console.log(err);
-            }       // Open pin 16 for output
-            gpio.write(16, 0, function() {           
-                console.log("set pin 16 high");
-              //gpio.close(16);                       
-              //18
-              gpio.open(18, "output", function(err) { 
-                if(err){
-                  console.log(err);
-                }       // Open pin 18 for output
-                gpio.write(18, 0, function() {            
-                    console.log("set pin 18 low");
-                  //gpio.close(18);                        
-                    gpio.open(13, "output", function(err) { 
-                          if(err){
-                            console.log(err);
-                          }       // Open pin 22 for output
-                          gpio.write(13, 0, function() {            
-                              console.log("set pin 13 high");
-                              gpio.open(15, "output", function(err) { 
-                                  if(err){
-                                    console.log(err);
-                                  }       // Open pin 22 for output
-                                  gpio.write(15, 0, function() {            
-                                      console.log("set pin 15 low");
-                                    //gpio.close(22);                        
-                                  });
-                                });                     
-                          });
-                        });
+
+        async.series([
+            function(callback) {
+                delayedWrite(16, false, callback);
+            },
+            function(callback) {
+                delayedWrite(18, false, callback);
+            },
+            function(callback) {
+                delayedWrite(13, false, callback);
+            },
+            function(callback) {
+                delayedWrite(15, false, callback);
+            },
+        ], function(err, results) {
+            console.log('Writes complete, pause then unexport pins');
+            setTimeout(function() {
+                gpio.destroy(function() {
+                    console.log('Closed pins, now exit');
+                    return process.exit(0);
                 });
-              }); 
-            });
-          });
+            }, 500);
+        });
 
     }
     else if(command === "1"){
       console.log("command left");
 
 
-           gpio.open(16, "output", function(err) { 
-            if(err){
-              console.log(err);
-            }       // Open pin 16 for output
-            gpio.write(16, 0, function() {           
-                console.log("set pin 16 high");
-              //gpio.close(16);                       
-              //18
-              gpio.open(18, "output", function(err) { 
-                if(err){
-                  console.log(err);
-                }       // Open pin 18 for output
-                gpio.write(18, 1, function() {            
-                    console.log("set pin 18 low");
-                  //gpio.close(18);                        
-                    gpio.open(13, "output", function(err) { 
-                          if(err){
-                            console.log(err);
-                          }       // Open pin 22 for output
-                          gpio.write(13, 1, function() {            
-                              console.log("set pin 13 high");
-                              gpio.open(15, "output", function(err) { 
-                                  if(err){
-                                    console.log(err);
-                                  }       // Open pin 22 for output
-                                  gpio.write(15, 0, function() {            
-                                      console.log("set pin 15 low");
-                                    //gpio.close(22);                        
-                                  });
-                                });                     
-                          });
-                        });
+        async.series([
+            function(callback) {
+                delayedWrite(16, false, callback);
+            },
+            function(callback) {
+                delayedWrite(18, true, callback);
+            },
+            function(callback) {
+                delayedWrite(13, true, callback);
+            },
+            function(callback) {
+                delayedWrite(15, false, callback);
+            },
+        ], function(err, results) {
+            console.log('Writes complete, pause then unexport pins');
+            setTimeout(function() {
+                gpio.destroy(function() {
+                    console.log('Closed pins, now exit');
+                    return process.exit(0);
                 });
-              }); 
-            });
-          });
-            
+            }, 500);
+        });
 
 
     }else if(command === "2"){
       console.log("command right");
       
-            gpio.open(16, "output", function(err) { 
-            if(err){
-              console.log(err);
-            }       // Open pin 16 for output
-            gpio.write(16, 1, function() {           
-                console.log("set pin 16 high");
-              //gpio.close(16);                       
-              //18
-              gpio.open(18, "output", function(err) { 
-                if(err){
-                  console.log(err);
-                }       // Open pin 18 for output
-                gpio.write(18, 0, function() {            
-                    console.log("set pin 18 low");
-                  //gpio.close(18);                        
-                    gpio.open(13, "output", function(err) { 
-                          if(err){
-                            console.log(err);
-                          }       // Open pin 22 for output
-                          gpio.write(13, 0, function() {            
-                              console.log("set pin 13 high");
-                              gpio.open(15, "output", function(err) { 
-                                  if(err){
-                                    console.log(err);
-                                  }       // Open pin 22 for output
-                                  gpio.write(15, 1, function() {            
-                                      console.log("set pin 15 low");
-                                    //gpio.close(22);                        
-                                  });
-                                });                     
-                          });
-                        });
+        async.series([
+            function(callback) {
+                delayedWrite(16, false, callback);
+            },
+            function(callback) {
+                delayedWrite(18, false, callback);
+            },
+            function(callback) {
+                delayedWrite(13, false, callback);
+            },
+            function(callback) {
+                delayedWrite(15, false, callback);
+            },
+        ], function(err, results) {
+            console.log('Writes complete, pause then unexport pins');
+            setTimeout(function() {
+                gpio.destroy(function() {
+                    console.log('Closed pins, now exit');
+                    return process.exit(0);
                 });
-              }); 
-            });
-          });
+            }, 500);
+        });
     }
     else if(command === "3"){
       console.log("forward");
 
-          gpio.open(16, "output", function(err) { 
-            if(err){
-              console.log(err);
-            }       // Open pin 16 for output
-            gpio.write(16, 1, function() {           
-                console.log("set pin 16 high");
-              //gpio.close(16);                       
-              //18
-              gpio.open(18, "output", function(err) { 
-                if(err){
-                  console.log(err);
-                }       // Open pin 18 for output
-                gpio.write(18, 0, function() {            
-                    console.log("set pin 18 low");
-                  //gpio.close(18);                        
-                    gpio.open(13, "output", function(err) { 
-                          if(err){
-                            console.log(err);
-                          }       // Open pin 22 for output
-                          gpio.write(13, 1, function() {            
-                              console.log("set pin 13 high");
-                              gpio.open(15, "output", function(err) { 
-                                  if(err){
-                                    console.log(err);
-                                  }       // Open pin 22 for output
-                                  gpio.write(15, 0, function() {            
-                                      console.log("set pin 15 low");
-                                    //gpio.close(22);                        
-                                  });
-                                });                     
-                          });
-                        });
+        async.series([
+            function(callback) {
+                delayedWrite(16, true, callback);
+            },
+            function(callback) {
+                delayedWrite(18, false, callback);
+            },
+            function(callback) {
+                delayedWrite(13, true, callback);
+            },
+            function(callback) {
+                delayedWrite(15, false, callback);
+            },
+        ], function(err, results) {
+            console.log('Writes complete, pause then unexport pins');
+            setTimeout(function() {
+                gpio.destroy(function() {
+                    console.log('Closed pins, now exit');
+                    return process.exit(0);
                 });
-              }); 
-            });
-          });
+            }, 500);
+        });
 
     }
     else if(command === "4"){
       console.log("back");
 
-          gpio.open(16, "output", function(err) { 
-            if(err){
-              console.log(err);
-            }       // Open pin 16 for output
-            gpio.write(16, 0, function() {           
-                console.log("set pin 16 low");
-              //gpio.close(16);                       
-              //18
-              gpio.open(18, "output", function(err) { 
-                if(err){
-                  console.log(err);
-                }       // Open pin 18 for output
-                gpio.write(18, 1, function() {            
-                    console.log("set pin 18 high");
-                  //gpio.close(18);                        
-                    gpio.open(13, "output", function(err) { 
-                          if(err){
-                            console.log(err);
-                          }       // Open pin 22 for output
-                          gpio.write(13, 0, function() {            
-                              console.log("set pin 13 low");
-                              gpio.open(15, "output", function(err) { 
-                                  if(err){
-                                    console.log(err);
-                                  }       // Open pin 22 for output
-                                  gpio.write(15, 1, function() {            
-                                      console.log("set pin 15 high");
-                                    //gpio.close(22);                        
-                                  });
-                                });                     
-                          });
-                        });
+        async.series([
+            function(callback) {
+                delayedWrite(16, false, callback);
+            },
+            function(callback) {
+                delayedWrite(18, true, callback);
+            },
+            function(callback) {
+                delayedWrite(13, false, callback);
+            },
+            function(callback) {
+                delayedWrite(15, true, callback);
+            },
+        ], function(err, results) {
+            console.log('Writes complete, pause then unexport pins');
+            setTimeout(function() {
+                gpio.destroy(function() {
+                    console.log('Closed pins, now exit');
+                    return process.exit(0);
                 });
-              }); 
-            });
-      
+            }, 500);
+        });
 
-      });
     }
   }
   callback(this.RESULT_SUCCESS);
 };
 
-function setMotorDirection(direction) {
-    console.log('Setting: ' + direction);    
-
-          var pin16 = 0;
-          var pin18 = 0;
-          var pin22 = 0;
-
-          if(direction === 'forward'){
-            pin16 = 1;
-            pin18 = 0;
-            pin22 = 1;
-          }else if (direction == 'reverse'){
-            pin16 = 1;
-            pin18 = 0;
-            pin22 = 1;
-          }
-
-          gpio.open(16, "output", function(err) { 
-            if(err){
-              console.log(err);
-            }       // Open pin 16 for output
-            gpio.write(16, pin16, function() {            // Set pin 16 high (1)
-                console.log("set pin 16 " + pin16);
-              //gpio.close(16);                        // Close pin 16
-              //18
-              gpio.open(18, "output", function(err) { 
-                if(err){
-                  console.log(err);
-                }       // Open pin 18 for output
-                gpio.write(18, pin18, function() {            // Set pin 18 low (0)
-                    console.log("set pin 18 " + pin18);
-                  //gpio.close(18);                        // Close pin 18
-                    gpio.open(22, "output", function(err) { 
-                          if(err){
-                            console.log(err);
-                          }       // Open pin 22 for output
-                          gpio.write(22, pin22, function() {            // Set pin 22 high (1)
-                              console.log("set pin 22 " + pin22);
-                            //gpio.close(22);                        // Close pin 22
-                          });
-                        });
-                });
-              }); 
-            });
-          });
+function delayedWrite(pin, value, callback) {
+    setTimeout(function() {
+        gpio.write(pin, value, callback);
+    }, 500);
 }
+
+function setUpPins(){
+
+  async.parallel([
+    function(callback) {
+        gpio.setup(16, gpio.DIR_OUT, callback)
+    },
+    function(callback) {
+        gpio.setup(18, gpio.DIR_OUT, callback)
+    },
+    function(callback) {
+        gpio.setup(22, gpio.DIR_OUT, callback)
+    },
+    function(callback) {
+        gpio.setup(13, gpio.DIR_OUT, callback)
+    },
+    ], function(err, results) {
+        console.log('Pins set up');
+        write();
+    });
+}
+
+
 
 BatteryLevelCharacteristic.prototype.onNotify = function() {
   console.log('NotifyOnlyCharacteristic on notify');
