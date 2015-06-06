@@ -31,7 +31,7 @@ var BatteryLevelCharacteristic = function() {
 util.inherits(BatteryLevelCharacteristic, Characteristic);
 
 BatteryLevelCharacteristic.prototype.onReadRequest = function(offset, callback) {
-  setUpPins();
+  
   console.log("in read");
   if (os.platform() === 'darwin') {
     exec('pmset -g batt', function (error, stdout, stderr) {
@@ -161,27 +161,31 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
     else if(command === "3"){
       console.log("forward");
 
-        async.series([
-            function(callback) {
-                delayedWrite(16, true, callback);
-            },
-            function(callback) {
-                delayedWrite(18, false, callback);
-            },
-            function(callback) {
-                delayedWrite(13, true, callback);
-            },
-            function(callback) {
-                delayedWrite(15, false, callback);
-            },
-        ], function(err, results) {
-            console.log('Writes complete, pause then unexport pins');
-            setTimeout(function() {
-                gpio.destroy(function() {
-                    console.log('Closed pins, now exit');
-                    return process.exit(0);
-                });
-            }, 500);
+        setUpPins(function(){
+
+          async.series([
+              function(callback) {
+                  delayedWrite(16, true, callback);
+              },
+              function(callback) {
+                  delayedWrite(18, false, callback);
+              },
+              function(callback) {
+                  delayedWrite(13, true, callback);
+              },
+              function(callback) {
+                  delayedWrite(15, false, callback);
+              },
+          ], function(err, results) {
+              console.log('Writes complete, pause then unexport pins');
+              setTimeout(function() {
+                  gpio.destroy(function() {
+                      console.log('Closed pins, now exit');
+                      return process.exit(0);
+                  });
+              }, 500);
+          });
+
         });
 
     }
@@ -222,7 +226,7 @@ function delayedWrite(pin, value, callback) {
     }, 500);
 }
 
-function setUpPins(){
+function setUpPins(callback){
 
   async.parallel([
     function(callback) {
@@ -240,6 +244,7 @@ function setUpPins(){
     ], function(err, results) {
         console.log('Pins set up');
         write();
+        callback();
     });
 }
 
