@@ -9,7 +9,10 @@ var util = require('util'),
   Characteristic = bleno.Characteristic,
   RoverSettings = require('./rover');
 
-
+  gpio.destroy(function() {
+      console.log('Closed pins');
+      return;
+  });
 
 var BatteryLevelCharacteristic = function() {
   BatteryLevelCharacteristic.super_.call(this, {
@@ -27,10 +30,7 @@ var BatteryLevelCharacteristic = function() {
       ]
   });
 
-        gpio.destroy(function() {
-            console.log('Closed pins');
-            return;
-        });
+
 
 };
 
