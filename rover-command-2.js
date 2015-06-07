@@ -117,33 +117,46 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
     else if(command === "1"){
       console.log("command left");
 
-      setUpPins(function(){
-                  async.series([
-                      function(callback) {
-                          delayedWrite(16, false, callback);
-                      },
-                      function(callback) {
-                          delayedWrite(18, true, callback);
-                      },
-                      function(callback) {
-                          delayedWrite(13, true, callback);
-                      },
-                      function(callback) {
-                          delayedWrite(15, false, callback);
-                      },
-                  ], function(err, results) {
-                      if (err){
-                        console.log(err);
-                      }
-                      console.log('Writes complete, pause then unexport pins');
-                      setTimeout(function() {
-                          gpio.destroy(function() {
-                              console.log('Closed pins');
-                              return;
-                          });
-                      }, 500);
-                    });
-              });
+      // setUpPins(function(){
+      //             async.series([
+      //                 function(callback) {
+      //                     delayedWrite(16, false, callback);
+      //                 },
+      //                 function(callback) {
+      //                     delayedWrite(18, true, callback);
+      //                 },
+      //                 function(callback) {
+      //                     delayedWrite(13, true, callback);
+      //                 },
+      //                 function(callback) {
+      //                     delayedWrite(15, false, callback);
+      //                 },
+      //             ], function(err, results) {
+      //                 if (err){
+      //                   console.log(err);
+      //                 }
+      //                 console.log('Writes complete, pause then unexport pins');
+      //                 setTimeout(function() {
+      //                     gpio.destroy(function() {
+      //                         console.log('Closed pins');
+      //                         return;
+      //                     });
+      //                 }, 500);
+      //               });
+      //         });
+
+    gpio.write(16, false, function(err) {
+        if (err) console.log(err);
+           gpio.write(18, true, function(err) {
+              if (err) console.log(err);
+                  gpio.write(13, true, function(err) {
+                    if (err) console.log(err);
+                      gpio.write(15, false, function(err) {
+                        if (err) console.log(err);
+                      });
+                });
+          });
+    });
 
 
     }else if(command === "2"){
