@@ -27,7 +27,11 @@ var BatteryLevelCharacteristic = function() {
       ]
   });
 
-  setUpPinsAtStart();
+        gpio.destroy(function() {
+            console.log('Closed pins');
+            return;
+        });
+
 };
 
 util.inherits(BatteryLevelCharacteristic, Characteristic);
@@ -267,28 +271,6 @@ function setUpPins(cb){
         cb();
     });
 }
-
-function setUpPinsAtStart(){
-
-  async.parallel([
-    function(callback) {
-        gpio.setup(16, gpio.DIR_OUT, callback)
-    },
-    function(callback) {
-        gpio.setup(18, gpio.DIR_OUT, callback)
-    },
-    function(callback) {
-        gpio.setup(22, gpio.DIR_OUT, callback)
-    },
-    function(callback) {
-        gpio.setup(13, gpio.DIR_OUT, callback)
-    },
-    ], function(err, results) {
-        console.log('Pins set up @ startup');
-
-    });
-}
-
 
 
 BatteryLevelCharacteristic.prototype.onNotify = function() {
