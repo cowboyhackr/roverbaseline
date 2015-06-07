@@ -143,7 +143,7 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
                           });
                       }, 500);
                     });
-              )};
+              });
 
 
     }else if(command === "2"){
