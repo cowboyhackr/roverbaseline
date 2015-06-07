@@ -254,6 +254,10 @@ function delayedWrite(pin, value, callback) {
 
 function setUpPins(cb){
 
+  if(cb){
+    return; //disable for troublshooting
+  }
+
   async.parallel([
     function(callback) {
         gpio.setup(16, gpio.DIR_OUT, callback)
