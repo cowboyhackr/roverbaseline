@@ -144,19 +144,20 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
       //                 }, 500);
       //               });
       //         });
-
-    gpio.write(16, false, function(err) {
-        if (err) console.log(err);
-           gpio.write(18, true, function(err) {
-              if (err) console.log(err);
-                  gpio.write(13, true, function(err) {
+            setUpPins(function(){
+                gpio.write(16, false, function(err) {
                     if (err) console.log(err);
-                      gpio.write(15, false, function(err) {
-                        if (err) console.log(err);
+                       gpio.write(18, true, function(err) {
+                          if (err) console.log(err);
+                            gpio.write(13, true, function(err) {
+                              if (err) console.log(err);
+                              gpio.write(15, false, function(err) {
+                                if (err) console.log(err);
+                              });
+                          });
                       });
-                });
-          });
-    });
+                  });
+              });
 
 
     }else if(command === "2"){
