@@ -255,29 +255,30 @@ function delayedWrite(pin, value, callback) {
 
 function setUpPins(cb){
 
-  if(cb){
-    cb(); //disable for troublshooting
-  }
+  gpio.destroy(function() {
+      console.log('Closed pins');
 
-  async.parallel([
-    function(callback) {
-        gpio.setup(16, gpio.DIR_OUT, callback)
-    },
-    function(callback) {
-        gpio.setup(18, gpio.DIR_OUT, callback)
-    },
-    function(callback) {
-        gpio.setup(22, gpio.DIR_OUT, callback)
-    },
-    function(callback) {
-        gpio.setup(13, gpio.DIR_OUT, callback)
-    },
-    ], function(err, results) {
-        console.log('Pins set up');
-        if(cb){
-          cb();
-        }
-    });
+      async.parallel([
+        function(callback) {
+            gpio.setup(16, gpio.DIR_OUT, callback)
+        },
+        function(callback) {
+            gpio.setup(18, gpio.DIR_OUT, callback)
+        },
+        function(callback) {
+            gpio.setup(22, gpio.DIR_OUT, callback)
+        },
+        function(callback) {
+            gpio.setup(13, gpio.DIR_OUT, callback)
+        },
+        ], function(err, results) {
+            console.log('Pins set up');
+            if(cb){
+              cb();
+            }
+        });
+        return;
+  });
 }
 
 
