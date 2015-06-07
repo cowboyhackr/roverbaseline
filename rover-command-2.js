@@ -26,6 +26,8 @@ var BatteryLevelCharacteristic = function() {
         })
       ]
   });
+
+  setUpPinsAtStart();
 };
 
 util.inherits(BatteryLevelCharacteristic, Characteristic);
@@ -230,7 +232,28 @@ function delayedWrite(pin, value, callback) {
     }, 500);
 }
 
-function setUpPins(callback){
+function setUpPins(cb){
+
+  // async.parallel([
+  //   function(callback) {
+  //       gpio.setup(16, gpio.DIR_OUT, callback)
+  //   },
+  //   function(callback) {
+  //       gpio.setup(18, gpio.DIR_OUT, callback)
+  //   },
+  //   function(callback) {
+  //       gpio.setup(22, gpio.DIR_OUT, callback)
+  //   },
+  //   function(callback) {
+  //       gpio.setup(13, gpio.DIR_OUT, callback)
+  //   },
+  //   ], function(err, results) {
+  //       console.log('Pins set up');
+  //       cb();
+  //   });
+}
+
+function setUpPinsAtStart(){
 
   async.parallel([
     function(callback) {
@@ -246,8 +269,8 @@ function setUpPins(callback){
         gpio.setup(13, gpio.DIR_OUT, callback)
     },
     ], function(err, results) {
-        console.log('Pins set up');
-        callback();
+        console.log('Pins set up @ startup');
+
     });
 }
 
