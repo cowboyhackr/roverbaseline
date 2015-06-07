@@ -262,7 +262,7 @@ function setUpPins(cb){
           if (err) console.log(err);
           gpio.setup(18, gpio.DIR_OUT, function(err){
              if (err) console.log(err);
-             gpio.setup(22, gpio.DIR_OUT, function(err){
+             gpio.setup(15, gpio.DIR_OUT, function(err){
                   if (err) console.log(err);
                   gpio.setup(13, gpio.DIR_OUT, function(err){
                       if (err) console.log(err);
