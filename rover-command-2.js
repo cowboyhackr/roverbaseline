@@ -96,6 +96,9 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
                 delayedWrite(15, false, callback);
             },
         ], function(err, results) {
+            if (err){
+              console.log(err);
+            }
             console.log('Writes complete, pause then unexport pins');
             setTimeout(function() {
                 gpio.destroy(function() {
@@ -124,6 +127,9 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
                 delayedWrite(15, false, callback);
             },
         ], function(err, results) {
+            if (err){
+              console.log(err);
+            }
             console.log('Writes complete, pause then unexport pins');
             setTimeout(function() {
                 gpio.destroy(function() {
@@ -152,6 +158,9 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
                 delayedWrite(15, true, callback);
             },
         ], function(err, results) {
+            if (err){
+              console.log(err);
+            }
             console.log('Writes complete, pause then unexport pins');
             setTimeout(function() {
                 gpio.destroy(function() {
@@ -181,6 +190,9 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
                   delayedWrite(15, false, callback);
               },
           ], function(err, results) {
+              if (err){
+                console.log(err);
+              }
               console.log('Writes complete, pause then unexport pins');
               setTimeout(function() {
                   gpio.destroy(function() {
@@ -211,6 +223,9 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
                   delayedWrite(15, true, callback);
               },
           ], function(err, results) {
+              if (err){
+                console.log(err);
+              }
               console.log('Writes complete, pause then unexport pins');
               setTimeout(function() {
                   gpio.destroy(function() {
