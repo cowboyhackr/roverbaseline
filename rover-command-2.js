@@ -11,6 +11,7 @@ var util = require('util'),
 
   gpio.destroy(function() {
       console.log('Closed pins');
+      setUpPins(null);
       return;
   });
 
@@ -268,7 +269,9 @@ function setUpPins(cb){
     },
     ], function(err, results) {
         console.log('Pins set up');
-        cb();
+        if(cb){
+          cb();
+        }
     });
 }
 
