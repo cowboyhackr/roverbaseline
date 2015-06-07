@@ -117,32 +117,33 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
     else if(command === "1"){
       console.log("command left");
 
-
-        async.series([
-            function(callback) {
-                delayedWrite(16, false, callback);
-            },
-            function(callback) {
-                delayedWrite(18, true, callback);
-            },
-            function(callback) {
-                delayedWrite(13, true, callback);
-            },
-            function(callback) {
-                delayedWrite(15, false, callback);
-            },
-        ], function(err, results) {
-            if (err){
-              console.log(err);
-            }
-            console.log('Writes complete, pause then unexport pins');
-            setTimeout(function() {
-                gpio.destroy(function() {
-                    console.log('Closed pins');
-                    return;
-                });
-            }, 500);
-        });
+      setUpPins(function(){
+                  async.series([
+                      function(callback) {
+                          delayedWrite(16, false, callback);
+                      },
+                      function(callback) {
+                          delayedWrite(18, true, callback);
+                      },
+                      function(callback) {
+                          delayedWrite(13, true, callback);
+                      },
+                      function(callback) {
+                          delayedWrite(15, false, callback);
+                      },
+                  ], function(err, results) {
+                      if (err){
+                        console.log(err);
+                      }
+                      console.log('Writes complete, pause then unexport pins');
+                      setTimeout(function() {
+                          gpio.destroy(function() {
+                              console.log('Closed pins');
+                              return;
+                          });
+                      }, 500);
+                    });
+              )};
 
 
     }else if(command === "2"){
@@ -255,7 +256,7 @@ function delayedWrite(pin, value, callback) {
 function setUpPins(cb){
 
   if(cb){
-    return; //disable for troublshooting
+    cb(); //disable for troublshooting
   }
 
   async.parallel([
