@@ -289,7 +289,7 @@ function setUpPins(cb){
       //       }
       //   });
       //   return;
-  });
+      //});
 }
 
 
