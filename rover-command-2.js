@@ -258,10 +258,14 @@ function delayedWrite(pin, value, callback) {
 
 function setUpPins(cb){
 
-      gpio.setup(16, gpio.DIR_OUT, function(){
-          gpio.setup(18, gpio.DIR_OUT, function(){
-             gpio.setup(22, gpio.DIR_OUT, function(){
-                  gpio.setup(13, gpio.DIR_OUT, function(){
+      gpio.setup(16, gpio.DIR_OUT, function(err){
+          if (err) console.log(err);
+          gpio.setup(18, gpio.DIR_OUT, function(err){
+             if (err) console.log(err);
+             gpio.setup(22, gpio.DIR_OUT, function(err){
+                  if (err) console.log(err);
+                  gpio.setup(13, gpio.DIR_OUT, function(err){
+                      if (err) console.log(err);
                       if(cb) cb();
                         return;
                 });
