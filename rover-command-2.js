@@ -65,20 +65,9 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
     //console.log("in write - offset");
     callback(this.RESULT_ATTR_NOT_LONG);
   }
-  //else if (data.length !== 1) {
-   // console.log("data length !== 1");
-    //console.log(JSON.stringify(data));
-    //callback(this.RESULT_INVALID_ATTRIBUTE_LENGTH);
-  //}
+
   else {
-    // console.log(JSON.stringify(data));
-    // console.log('processing write request');
-    // var receivedData = data.readUInt8(0);
-    // console.log(typeof data);
-    // console.log(data.toString('ascii'));
-    
-    // console.log(receivedData);
-    // console.log(typeof receivedData);
+
         var command = data.toString('ascii');
     //console.log('command');
     console.log(command);
@@ -269,29 +258,37 @@ function delayedWrite(pin, value, callback) {
 
 function setUpPins(cb){
 
-  gpio.destroy(function() {
-      console.log('Closed pins');
+      gpio.setup(16, gpio.DIR_OUT, function(){
+          gpio.setup(18, gpio.DIR_OUT, function(){
+             gpio.setup(22, gpio.DIR_OUT, function(){
+                  gpio.setup(13, gpio.DIR_OUT, function(){
+                      if(cb) cb();
+                        return;
+                });
+             });
+          });
+      });
 
-      async.parallel([
-        function(callback) {
-            gpio.setup(16, gpio.DIR_OUT, callback)
-        },
-        function(callback) {
-            gpio.setup(18, gpio.DIR_OUT, callback)
-        },
-        function(callback) {
-            gpio.setup(22, gpio.DIR_OUT, callback)
-        },
-        function(callback) {
-            gpio.setup(13, gpio.DIR_OUT, callback)
-        },
-        ], function(err, results) {
-            console.log('Pins set up');
-            if(cb){
-              cb();
-            }
-        });
-        return;
+      // async.parallel([
+      //   function(callback) {
+      //       gpio.setup(16, gpio.DIR_OUT, callback)
+      //   },
+      //   function(callback) {
+      //       gpio.setup(18, gpio.DIR_OUT, callback)
+      //   },
+      //   function(callback) {
+      //       gpio.setup(22, gpio.DIR_OUT, callback)
+      //   },
+      //   function(callback) {
+      //       gpio.setup(13, gpio.DIR_OUT, callback)
+      //   },
+      //   ], function(err, results) {
+      //       console.log('Pins set up');
+      //       if(cb){
+      //         cb();
+      //       }
+      //   });
+      //   return;
   });
 }
 
