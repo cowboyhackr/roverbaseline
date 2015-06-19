@@ -92,8 +92,8 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
               });
 
     }
-    else if(command === "1"){
-      console.log("command left");
+    else if(command === "2"){
+      console.log("command right");
 
             setUpPins(function(){
                 gpio.write(16, false, function(err) {
@@ -112,8 +112,8 @@ BatteryLevelCharacteristic.prototype.onWriteRequest = function(data, offset, wit
               });
 
 
-    }else if(command === "2"){
-      console.log("command right");
+    }else if(command === "1"){
+      console.log("command left");
       
 
             setUpPins(function(){
