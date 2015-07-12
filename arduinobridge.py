@@ -5,6 +5,7 @@ import string
 ser = serial.Serial('/dev/ttyAMA0', 115200)
 while True :
     try:
+    	print "begin"
         # Read data incoming on the serial line
         data=ser.readline()
         print data
