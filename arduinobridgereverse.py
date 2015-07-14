@@ -8,7 +8,7 @@ while True :
     try:
     	print "counter: " 
     	print str(counter)
-    	ser.write(counter)
+    	ser.write(str(counter))
     	time.sleep(1)
         counter += 1
         # Read data incoming on the serial line
