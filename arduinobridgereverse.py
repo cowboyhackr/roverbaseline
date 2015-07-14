@@ -6,7 +6,8 @@ ser = serial.Serial('/dev/ttyAMA0', 115200)
 counter = 0
 while True :
     try:
-    	print "counter: " + counter
+    	print "counter: " 
+    	print counter
     	ser.write(counter)
     	time.sleep(1)
         counter += 1
