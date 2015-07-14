@@ -1,6 +1,7 @@
 import serial
 import sys
 import string
+import time
  
 ser = serial.Serial('/dev/ttyAMA0', 115200)
 counter = 0
