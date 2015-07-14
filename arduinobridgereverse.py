@@ -7,7 +7,7 @@ counter = 0
 while True :
     try:
     	print "counter: " 
-    	print counter
+    	print str(counter)
     	ser.write(counter)
     	time.sleep(1)
         counter += 1
