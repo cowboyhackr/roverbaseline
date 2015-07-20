@@ -4,14 +4,18 @@ import string
 import time
  
 ser = serial.Serial('/dev/ttyAMA0', 115200)
-counter = 0
+counter = 20
 while True :
     try:
+    	if(counter == 121){
+        	counter = 20;
+        }
     	print "counter: " 
     	print str(counter)
     	ser.write(str(counter))
-    	time.sleep(1)
+    	time.sleep(10)
         counter += 1
+
         # Read data incoming on the serial line
         data=ser.readline()
         print data
