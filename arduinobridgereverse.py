@@ -13,7 +13,7 @@ while True :
     	print "counter: " 
     	print str(counter)
     	ser.write(str(counter))
-    	time.sleep(10)
+    	time.sleep(1)
         counter += 1
 
         # Read data incoming on the serial line
