@@ -7,8 +7,8 @@ ser = serial.Serial('/dev/ttyAMA0', 115200)
 counter = 20
 while True :
     try:
-    	if counter == 121:
-        	counter = 20
+    # 	if counter == 121:
+ 			# counter = 20
         
     	print "counter: " 
     	print str(counter)
